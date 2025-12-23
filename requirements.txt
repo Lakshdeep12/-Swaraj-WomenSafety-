@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy
+alembic
+pydantic
+python-jose
+passlib[bcrypt]
+python-dotenv
+httpx
+pytest
+python-dotenv
+fastapi-security
+fastapi-users[sqlalchemy2]
