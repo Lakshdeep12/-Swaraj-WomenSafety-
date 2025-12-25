@@ -2,6 +2,8 @@ from sqlalchemy import Column, Float, ForeignKey, Integer
 from sqlalchemy.orm import relationship, Session
 from datetime import datetime, timedelta
 from models.location import LiveLocation
+from app.database import SessionLocal
+
 
 def upsert_live_location(db: Session, user_id: int, latitude: float, longitude: float):
     location = db.query(LiveLocation).filter(LiveLocation.user_id == user_id).first()
@@ -23,3 +25,7 @@ def upsert_live_location(db: Session, user_id: int, latitude: float, longitude: 
 
 def get_live_location(db: Session, user_id: int):  
     return db.query(LiveLocation).filter(LiveLocation.user_id == user_id).first()
+
+async def save_live_location(user_id: int, data: dict):
+    print(f"[TRACKING] User {user_id}: {data}")
+    # Here you can implement saving to the database if needed

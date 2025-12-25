@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr
 from starlette import status
 from app.database import SessionLocal, engine
-from models.user import User
+from models.user import User, UserRole
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -95,3 +95,11 @@ async def get_current_user(db: db_dependency, token: str = Depends(oauth2_bearer
     if user is None:
         raise credentials_exception
     return user
+
+async def require_admin_or_ngo(current_user: User = Depends(get_current_user)):
+    if current_user.role not in [UserRole.admin, UserRole.ngo]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient permissions. Admin or NGO access required."
+        )
+    return current_user
