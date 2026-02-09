@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = int(os.getenv("REFRESH_TOKEN_EXPIRE", "7"))
     
     # ============= CORS Configuration =============
-    CORS_ORIGINS: list = [
+    CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "").split(",") if os.getenv("CORS_ORIGINS") else ([
         "http://localhost:3000",
         "http://localhost:8080",
         "http://localhost:5173",
@@ -52,7 +52,7 @@ class Settings(BaseSettings):
         "http://localhost:8000",
     ] if ENVIRONMENT == "development" else [
         "https://asha-alita.com",
-    ]
+    ])
     CORS_ALLOW_CREDENTIALS: bool = True
     CORS_ALLOW_METHODS: list = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
     CORS_ALLOW_HEADERS: list = ["*"]
