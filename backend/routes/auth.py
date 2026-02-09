@@ -10,11 +10,13 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from schemas.user import Token
+from core.config import get_settings
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-SECRET_KEY ="your_secret_key"
-ALGORITHM = "HS256"
+settings = get_settings()
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/login")
 
@@ -27,14 +29,7 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-db_dependency = Annotated[Session, Depends(get_db)]
+from app.dependencies import get_db, db_dependency
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
     create_user_model = User(
@@ -44,6 +39,8 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
     )
     db.add(create_user_model)
     db.commit()
+    db.refresh(create_user_model)
+    return {"id": create_user_model.id, "email": create_user_model.email, "message": "User created successfully"}
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(db: db_dependency, form_data: OAuth2PasswordRequestForm = Depends()):

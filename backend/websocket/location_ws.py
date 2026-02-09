@@ -2,7 +2,8 @@ from fastapi import WebSocket, WebSocketDisconnect, WebSocketException, HTTPExce
 from typing import Annotated
 from .manager import manager
 from services.location_services import upsert_live_location
-from routes.auth import get_db, SECRET_KEY, ALGORITHM
+from core.config import get_settings
+from app.dependencies import get_db
 from models.user import User
 from models.contact import Contact
 from sqlalchemy.orm import Session
@@ -14,6 +15,9 @@ from pydantic import ValidationError
 from schemas.location import LocationUpdate
 import json
 
+settings = get_settings()
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
 logger = logging.getLogger(__name__)
 
 last_location = {}

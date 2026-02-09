@@ -40,7 +40,7 @@ Fill in the details as follows:
 *   **Root Directory**: `backend` (IMPORTANT: Since your backend is in a folder).
 *   **Runtime**: `Python 3`.
 *   **Build Command**: `pip install -r requirements.txt`.
-*   **Start Command**: `gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app`.
+*   **Start Command**: `alembic upgrade head && gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app`
 
 ## Step 4: Environment Variables
 

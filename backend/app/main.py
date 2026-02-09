@@ -19,6 +19,7 @@ from core.exception_handlers import register_exception_handlers, ExceptionHandle
 from core.response import create_response, ResponseStatus
 from core.security import SecurityHeaders
 from app.database import engine, SessionLocal, Base
+from app.dependencies import get_db, db_dependency
 from routes.auth import router as auth_router, get_current_user
 from routes.contacts import router as contacts_router
 from routes.location import router as location_router
@@ -33,6 +34,10 @@ from websocket.location_ws import location_websocket_endpoint
 from websocket.contacts_ws import contacts_websocket_endpoint
 from websocket.sos_ws import sos_websocket_endpoint
 from websocket.admin_ws import admin_websocket_endpoint
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 settings = get_settings()
 logger = get_logger(__name__)
@@ -96,16 +101,6 @@ async def redoc_html():
     )
 
 
-def get_db():
-    """Database session dependency"""
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[User, Depends(get_current_user)]
 
 @app.on_event("startup")

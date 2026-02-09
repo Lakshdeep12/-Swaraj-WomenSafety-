@@ -3,7 +3,7 @@ Centralized Configuration Management
 Secure environment-based configuration with validation
 """
 from pydantic_settings import BaseSettings
-from pydantic import ConfigDict
+from pydantic import ConfigDict, field_validator
 from functools import lru_cache
 import os
 from typing import Optional
@@ -26,10 +26,19 @@ class Settings(BaseSettings):
     RELOAD: bool = DEBUG
     
     # ============= Database Configuration =============
+    # ============= Database Configuration =============
     DATABASE_URL: str = os.getenv(
         "DATABASE_URL",
         "sqlite:///./asha_alita.db"
     )
+
+    @field_validator("DATABASE_URL")
+    @classmethod
+    def check_database_url(cls, v: str) -> str:
+        if v and v.startswith("postgres://"):
+            return v.replace("postgres://", "postgresql://", 1)
+        return v
+
     DB_ECHO: bool = DEBUG
     DB_POOL_SIZE: int = int(os.getenv("DB_POOL_SIZE", "20"))
     DB_MAX_OVERFLOW: int = int(os.getenv("DB_MAX_OVERFLOW", "40"))

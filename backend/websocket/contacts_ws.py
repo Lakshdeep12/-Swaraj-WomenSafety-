@@ -1,7 +1,8 @@
 from fastapi import WebSocket, WebSocketDisconnect, HTTPException
 from typing import Annotated
 from .manager import manager
-from routes.auth import get_db, SECRET_KEY, ALGORITHM
+from core.config import get_settings
+from app.dependencies import get_db
 from models.user import User
 from models.contact import Contact
 from sqlalchemy.orm import Session
@@ -9,6 +10,9 @@ from jose import JWTError, jwt
 import logging
 import json
 
+settings = get_settings()
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
 logger = logging.getLogger(__name__)
 
 async def get_current_user_from_token(token: str, db: Session):
