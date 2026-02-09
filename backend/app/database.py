@@ -5,6 +5,10 @@ from core.config import get_settings
 
 settings = get_settings()
 
+# Log database connection type
+db_scheme = settings.DATABASE_URL.split("://")[0] if "://" in settings.DATABASE_URL else "unknown"
+print(f"DATABASE: Connecting using {db_scheme} dialect")
+
 # Configure engine based on database type
 is_sqlite = "sqlite" in settings.DATABASE_URL
 

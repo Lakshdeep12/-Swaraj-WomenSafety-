@@ -7,6 +7,7 @@ python-multipart>=0.0.6
 sqlalchemy>=2.0.0
 alembic>=1.10.0
 psycopg2-binary>=2.9.0  # PostgreSQL driver
+pymysql>=1.1.0          # MySQL driver fallback
 
 # Data Validation
 pydantic>=2.0.0
@@ -45,3 +46,5 @@ gunicorn>=21.0.0
 # Utilities
 python-dateutil>=2.8.0
 pytz>=2023.3
+pymysql>=1.1.0
+cryptography >=41.0.0

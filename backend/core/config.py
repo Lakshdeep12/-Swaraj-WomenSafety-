@@ -36,8 +36,12 @@ class Settings(BaseSettings):
     @field_validator("DATABASE_URL")
     @classmethod
     def check_database_url(cls, v: str) -> str:
-        if v and v.startswith("postgres://"):
+        if not v:
+            return "sqlite:///./asha_alita.db"
+        if v.startswith("postgres://"):
             return v.replace("postgres://", "postgresql://", 1)
+        if v.startswith("mysql://"):
+            return v.replace("mysql://", "mysql+pymysql://", 1)
         return v
 
     DB_ECHO: bool = DEBUG

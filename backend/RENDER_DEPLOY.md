@@ -36,11 +36,13 @@ git push origin main
 Fill in the details as follows:
 
 *   **Region**: Choose the one closest to your users (e.g., `Singapore` or `Frankfurt`).
-*   **Branch**: `main` (or your working branch).
-*   **Root Directory**: `backend` (IMPORTANT: Since your backend is in a folder).
-*   **Runtime**: `Python 3`.
-*   **Build Command**: `pip install -r requirements.txt`.
-*   **Start Command**: `alembic upgrade head && gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app`
+*   **Branch**: `organized`
+*   **Root Directory**: `backend`  
+    > **🔕 CRITICAL**: If you forget this, the app will not find your files!
+*   **Runtime**: `Python 3`
+*   **Build Command**: `pip install -r requirements.txt`
+*   **Start Command**: `alembic upgrade head && gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app`  
+    > **⚠️ IMPORTANT**: Do NOT use the default `uvicorn` command Render suggests. It will skip database setup and might fail to find the app.
 
 ## Step 4: Environment Variables
 
