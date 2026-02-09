@@ -66,7 +66,7 @@ app.add_middleware(
 
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["localhost", "127.0.0.1", "*.asha-alita.com"],
+    allowed_hosts=settings.ALLOWED_HOSTS,
 )
 
 register_exception_handlers(app)

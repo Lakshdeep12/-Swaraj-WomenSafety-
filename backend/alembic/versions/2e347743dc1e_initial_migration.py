@@ -28,7 +28,7 @@ def upgrade() -> None:
     sa.Column('category', sa.Enum('crime', 'law', 'guideline', name='awarenesscategory'), nullable=False),
     sa.Column('source', sa.Enum('ngo', 'govt', 'admin', name='awarenesssource'), nullable=False),
     sa.Column('is_verified', sa.Boolean(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_awareness_posts_category'), 'awareness_posts', ['category'], unique=False)
@@ -39,7 +39,7 @@ def upgrade() -> None:
     sa.Column('role', sa.Enum('NGO', 'LAWYER', 'PSYCHOLOGIST', name='mentorrole'), nullable=False),
     sa.Column('verified', sa.Boolean(), nullable=False),
     sa.Column('active_status', sa.Boolean(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_mentors_id'), 'mentors', ['id'], unique=False)
@@ -85,7 +85,7 @@ def upgrade() -> None:
     sa.Column('mentor_id', sa.Integer(), nullable=False),
     sa.Column('topic', sa.Enum('LEGAL_ADVICE', 'EMOTIONAL_SUPPORT', 'SAFETY_PLANNING', 'REPORTING_GUIDANCE', name='mentorshiptopic'), nullable=False),
     sa.Column('status', sa.Enum('PENDING', 'ACTIVE', 'CLOSED', name='mentorshipstatus'), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.Column('closed_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['mentor_id'], ['mentors.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
@@ -99,7 +99,7 @@ def upgrade() -> None:
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('awareness_id', sa.Integer(), nullable=False),
     sa.Column('emoji', sa.String(length=10), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.ForeignKeyConstraint(['awareness_id'], ['awareness_posts.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id'),
@@ -127,7 +127,7 @@ def upgrade() -> None:
     sa.Column('role', sa.Enum('USER', 'MENTOR', name='messagerole'), nullable=False),
     sa.Column('message', sa.String(length=1000), nullable=False),
     sa.Column('is_filtered', sa.Boolean(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.ForeignKeyConstraint(['session_id'], ['mentorship_sessions.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
